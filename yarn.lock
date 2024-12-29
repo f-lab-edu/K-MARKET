@@ -913,6 +913,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supabase/ssr@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "@supabase/ssr@npm:0.5.2"
+  dependencies:
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^0.7.0"
+  peerDependencies:
+    "@supabase/supabase-js": ^2.43.4
+  checksum: 10c0/5dcf74d05771d1e88225fbc782e2594d8b23d9b5c9303009ffe5ebedf68293aa033ece4d4a45a530933a5f282cc770a43cfd5e727e07a6609883ffa8b488bbfd
+  languageName: node
+  linkType: hard
+
 "@supabase/storage-js@npm:2.7.1":
   version: 2.7.1
   resolution: "@supabase/storage-js@npm:2.7.1"
@@ -1026,6 +1038,13 @@ __metadata:
   bin:
     workspaces: dist/cli.js
   checksum: 10c0/2e5dd44b4c7f2bc9ceffb6fa8118ca76efc21c828f70576f06ca59849d378371d04a6a3cbf5373795cb037a8b7069473924d708122b51bd6bdd77e86da1354b1
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 10c0/5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
   languageName: node
   linkType: hard
 
@@ -1897,6 +1916,7 @@ __metadata:
     "@repo/tailwind-config": "npm:*"
     "@repo/typescript-config": "npm:*"
     "@repo/ui": "npm:*"
+    "@supabase/ssr": "npm:^0.5.2"
     "@supabase/supabase-js": "npm:^2.47.10"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
@@ -2287,6 +2307,13 @@ __metadata:
   version: 2.0.0
   resolution: "convert-source-map@npm:2.0.0"
   checksum: 10c0/8f2f7a27a1a011cc6cc88cc4da2d7d0cfa5ee0369508baae3d98c260bb3ac520691464e5bbe4ae7cdf09860c1d69ecc6f70c63c6e7c7f7e3f18ec08484dc7d9b
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^0.7.0":
+  version: 0.7.2
+  resolution: "cookie@npm:0.7.2"
+  checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
   languageName: node
   linkType: hard
 
