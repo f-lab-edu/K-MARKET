@@ -1,17 +1,14 @@
-import { Button } from "@repo/ui/components/button";
-import { createClient } from "@/utils/supabase/server.ts";
+import SignInForm from "@/features/sign-in/components/SignInForm.tsx";
 
 export default async function Home() {
-  /* TEST - Supabase로부터 사용자 정보를 가져옵니다. */
-  const supabase = await createClient();
-  const { data: users } = await supabase.from("users").select();
-  console.log(users)
+
 
   return (
-    <div>
-      <Button size="sm" variant="destructive">
-        button
-      </Button>
-    </div>
+    <section className="flex items-center justify-center h-screen">
+      <div>
+        <h1 className="text-4xl font-bold text-center py-3">K-MARKET</h1>
+        <SignInForm/>
+      </div>
+    </section>
   );
 }
