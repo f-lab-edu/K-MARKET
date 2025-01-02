@@ -1,6 +1,6 @@
-import {dirname} from "path";
-import {fileURLToPath} from "url";
-import {FlatCompat} from "@eslint/eslintrc";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,22 +24,22 @@ const eslintConfig = [
             "src/hooks/**/*",
             "src/lib/**/*",
             "src/utils/**/*",
-            "src/server/**/*"
-          ]
+            "src/server/**/*",
+          ],
         },
         {
           mode: "full",
           type: "feature",
           capture: ["featureName"],
-          pattern: ["src/features/*/**/*"]
+          pattern: ["src/features/*/**/*"],
         },
         {
           mode: "full",
           type: "app",
           capture: ["_", "fileName"],
-          pattern: ["src/app/**/*"]
+          pattern: ["src/app/**/*"],
         },
-      ]
+      ],
     },
     rules: {
       "boundaries/no-unknown": ["error"],
@@ -51,29 +51,28 @@ const eslintConfig = [
           rules: [
             {
               from: ["shared"],
-              allow: ["shared"]
+              allow: ["shared"],
             },
             {
               from: ["feature"],
               allow: [
                 "shared",
-                ["feature", { "featureName": "${from.featureName}" }]
-              ]
+                ["feature", { featureName: "${from.featureName}" }],
+              ],
             },
             {
-              "from": ["app", "neverImport"],
-              "allow": ["shared", "feature"]
+              from: ["app", "neverImport"],
+              allow: ["shared", "feature"],
             },
             {
-              "from": ["app"],
-              "allow": [["app", { "fileName": "*.css" }]]
-            }
-          ]
-        }
-      ]
-    }
+              from: ["app"],
+              allow: [["app", { fileName: "*.css" }]],
+            },
+          ],
+        },
+      ],
+    },
   },
-
 ];
 
 export default eslintConfig;
