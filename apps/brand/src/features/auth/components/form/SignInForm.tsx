@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -12,8 +13,9 @@ import { Input } from "@repo/ui/components/input";
 import { Button } from "@repo/ui/components/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { signInFormSchema } from "@/features/sign-in/schemas/sign-in";
+
 import Link from "next/link";
+import { signInFormSchema } from "@/features/auth/schemas";
 
 const SignInForm = () => {
   const form = useForm<z.infer<typeof signInFormSchema>>({
