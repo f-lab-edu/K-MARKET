@@ -19,6 +19,15 @@ const SignUpForm = () => {
       email: "",
       password: "",
       passwordConfirm: "",
+      name: "",
+      phone: "",
+      brandNameKo: "",
+      brandNameEn: "",
+      ceoName: "",
+      businessNumber: "",
+      businessAddress: "",
+      businessRegCert: "",
+      idCard: "",
     },
   })
 
@@ -35,35 +44,35 @@ const SignUpForm = () => {
             control={form.control}
             name="email"
             render={({field}) => (
-              <SignUpInputWithLabel type='email' label='이메일' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel type='email' placeholder="이메일" label='이메일' value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="password"
             render={({field}) => (
-              <SignUpInputWithLabel type='password' label='비밀번호' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel type='password' placeholder="비밀번호는 영문, 숫자, 특수기호 조합으로 6자리 이상" label='비밀번호' value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="passwordConfirm"
             render={({field}) => (
-              <SignUpInputWithLabel type='password' label='비밀번호 확인' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel type='password' placeholder="비밀번호 확인" label='비밀번호 확인' value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="name"
             render={({field}) => (
-              <SignUpInputWithLabel label='이름' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='이름' placeholder='이름' value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="phone"
             render={({field}) => (
-              <SignUpInputWithLabel label='휴대전화번호' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='휴대전화번호' placeholder='휴대전화번호(-없이 입력)' value={field.value} onChange={field.onChange}/>
             )}
           />
         </section>
@@ -73,35 +82,35 @@ const SignUpForm = () => {
             control={form.control}
             name="brandNameKo"
             render={({field}) => (
-              <SignUpInputWithLabel label='한글 상호명' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='한글 상호명' placeholder="한글 상호명" value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="brandNameEn"
             render={({field}) => (
-              <SignUpInputWithLabel label='영문 상호명' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='영문 상호명' placeholder="영문 상호명" value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="brandNameEn"
             render={({field}) => (
-              <SignUpInputWithLabel label='대표자명' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='대표자명' placeholder="대표자명" value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="businessNumber"
             render={({field}) => (
-              <SignUpInputWithLabel label='사업자 번호' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='사업자 번호' placeholder='사업자 번호 10자리(숫자)' value={field.value} onChange={field.onChange}/>
             )}
           />
           <FormField
             control={form.control}
             name="businessAddress"
             render={({field}) => (
-              <SignUpInputWithLabel label='사업자 주소' value={field.value} onChange={field.onChange}/>
+              <SignUpInputWithLabel label='사업자 주소' placeholder="사업자 주소" value={field.value} onChange={field.onChange}/>
             )}
           />
         </section>
