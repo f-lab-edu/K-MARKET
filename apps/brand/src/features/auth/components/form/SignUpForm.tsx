@@ -10,8 +10,11 @@ import { signUpFormSchema } from "@/features/auth/schemas";
 import SignUpUserField from "@/features/auth/components/SignUpUserField.tsx";
 import SignUpBusinessField from "@/features/auth/components/SignUpBusinessField.tsx";
 import SignUpFileField from "@/features/auth/components/SignUpFileField.tsx";
+import { useToast } from "@repo/ui/hooks/use-toast";
+import { signup } from "@/features/auth/server/actions/signup.ts";
 
 const SignUpForm = () => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
@@ -25,13 +28,23 @@ const SignUpForm = () => {
       ceoName: "",
       businessNumber: "",
       businessAddress: "",
-      businessRegCert: "",
-      idCard: "",
     },
   });
 
-  const handleSubmit = (value: z.infer<typeof signUpFormSchema>) => {
-    console.log(value);
+  const handleSubmit = async (value: z.infer<typeof signUpFormSchema>) => {
+    const result = await signup(value);
+
+    if (!result?.data) {
+      return toast({
+        title: result.message,
+        variant: "destructive",
+        duration: 1000,
+      });
+    }
+    return toast({
+      title: result.message,
+      duration: 1000,
+    });
   };
 
   return (

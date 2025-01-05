@@ -35,7 +35,7 @@ const SignUpBusinessField = () => {
       />
       <FormField
         control={form.control}
-        name="brandNameEn"
+        name="ceoName"
         render={({ field }) => (
           <SignUpInputWithLabel
             label="대표자명"
