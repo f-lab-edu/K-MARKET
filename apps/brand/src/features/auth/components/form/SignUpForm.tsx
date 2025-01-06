@@ -47,13 +47,7 @@ const SignUpForm = () => {
       title: result.message,
       duration: 2000,
       action: (
-        <Button
-          variant="link"
-          size="sm"
-          onClick={() => {
-            router.push("/");
-          }}
-        >
+        <Button variant="link" size="sm" onClick={() => router.push("/")}>
           로그인 페이지로 이동
         </Button>
       ),

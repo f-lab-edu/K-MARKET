@@ -75,6 +75,7 @@ const SignUpFileField = () => {
                       </>
                     )}
                   </div>
+                  <BusinessFile file={field.value} alt="사업자 등록증" />
                 </FormLabel>
                 <FormControl className="hidden">
                   <Input
@@ -97,18 +98,7 @@ const SignUpFileField = () => {
                 <FormLabel>
                   <Badge variant="destructive">첨부2</Badge> 신분증
                   <div className="relative flex flex-col gap-2 items-center justify-center mt-2 w-32 h-32 bg-gray-200 rounded overflow-hidden">
-                    {field.value ? (
-                      <Image
-                        src={URL.createObjectURL(field.value)}
-                        alt="신분증"
-                        fill
-                      />
-                    ) : (
-                      <>
-                        <Camera size={24} />
-                        <span className="text-gray-500">파일 첨부</span>
-                      </>
-                    )}
+                    <BusinessFile file={field.value} alt="신분증" />
                   </div>
                 </FormLabel>
                 <FormControl className="hidden">
@@ -131,3 +121,15 @@ const SignUpFileField = () => {
 };
 
 export default SignUpFileField;
+
+const BusinessFile = ({ file, alt }: { file: File; alt: string }) => {
+  if (!file)
+    return (
+      <>
+        <Camera size={24} />
+        <span className="text-gray-500">파일 첨부</span>
+      </>
+    );
+  const url = URL.createObjectURL(file);
+  return <Image src={url} alt={alt} fill />;
+};
