@@ -11,9 +11,11 @@ import SignUpUserField from "@/features/auth/components/SignUpUserField.tsx";
 import SignUpBusinessField from "@/features/auth/components/SignUpBusinessField.tsx";
 import SignUpFileField from "@/features/auth/components/SignUpFileField.tsx";
 import { useToast } from "@repo/ui/hooks/use-toast";
+import { useRouter } from "next/navigation";
 import { signup } from "@/features/auth/server/actions/signup.ts";
 
 const SignUpForm = () => {
+  const router = useRouter();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
@@ -43,7 +45,18 @@ const SignUpForm = () => {
     }
     return toast({
       title: result.message,
-      duration: 1000,
+      duration: 2000,
+      action: (
+        <Button
+          variant="link"
+          size="sm"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          로그인 페이지로 이동
+        </Button>
+      ),
     });
   };
 

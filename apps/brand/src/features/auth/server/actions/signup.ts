@@ -4,33 +4,32 @@ import { signUpFormSchema } from "@/features/auth/schemas";
 
 export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
   const { data: authData, error: authError } = await supabase.auth.signUp({
-    email: "example@email.com",
-    password: "example-password",
+    email: payload.email,
+    password: payload.password,
   });
   if (authError) {
-    console.error("Auth Error:", authError); // 개발자용 로그
     return {
-      message:
-        "회원가입에 실패하였습니다. 이메일 또는 비밀번호를 확인해주세요.",
+      message: "회원가입에 실패하였습니다. 다시 확인해주세요.",
     };
   }
-  try {
-    const userId = authData?.user?.id;
-    if (!userId) {
-      return { message: "User ID is missing." };
-    }
+  const userId = authData?.user?.id;
+  if (!userId) {
+    return { message: "User ID is missing." };
+  }
 
-    await registerUser(payload);
-    await registerBrand(payload, userId);
+  const userData = await Promise.all([
+    registerUser(payload),
+    registerBrand(payload, userId),
+  ]);
 
-    return { data: authData, message: "회원가입에 성공하였습니다." };
-  } catch (error) {
-    console.error("Registration Error:", error); // 개발자용 로그
+  const isError = userData.every((result) => !result.data);
+  if (isError) {
     return {
-      message:
-        "회원가입 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      message: "회원가입에 실패하였습니다. 다시 확인해주세요",
     };
   }
+
+  return { data: authData, message: "회원가입에 성공하였습니다." };
 };
 
 const registerUser = async (payload: z.infer<typeof signUpFormSchema>) => {
