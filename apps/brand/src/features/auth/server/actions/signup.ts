@@ -8,10 +8,17 @@ export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
     password: payload.password,
   });
   if (authError) {
+    const isReadyError = authError.code === "user_already_exists";
+    if (isReadyError) {
+      return {
+        message: "이미 가입된 이메일 입니다.",
+      };
+    }
     return {
       message: "회원가입에 실패하였습니다. 다시 확인해주세요.",
     };
   }
+
   const userId = authData?.user?.id;
   if (!userId) {
     return { message: "User ID is missing." };
@@ -23,7 +30,8 @@ export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
   ]);
 
   const isError = userData.every((result) => !result.data);
-  if (isError) {
+  if (isError && userId) {
+    await supabase.auth.admin.deleteUser(userId);
     return {
       message: "회원가입에 실패하였습니다. 다시 확인해주세요",
     };
