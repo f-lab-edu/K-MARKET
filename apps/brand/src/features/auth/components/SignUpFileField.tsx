@@ -16,6 +16,7 @@ import Image from "next/image";
 const SignUpFileField = () => {
   const form = useFormContext();
   const { toast } = useToast();
+
   const convertFileObject = (event: React.ChangeEvent<HTMLInputElement>) => {
     return event.target.files?.[0];
   };
