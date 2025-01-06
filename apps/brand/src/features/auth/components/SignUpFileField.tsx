@@ -62,20 +62,8 @@ const SignUpFileField = () => {
                 <FormLabel>
                   <Badge variant="destructive">첨부1</Badge> 사업자 등록증
                   <div className="relative flex flex-col gap-2 items-center justify-center mt-2 w-32 h-32 bg-gray-200 rounded overflow-hidden">
-                    {field.value ? (
-                      <Image
-                        src={URL.createObjectURL(field.value)}
-                        alt="사업자 등록증"
-                        fill={true}
-                      />
-                    ) : (
-                      <>
-                        <Camera size={24} />
-                        <span className="text-gray-500">파일 첨부</span>
-                      </>
-                    )}
+                    <BusinessFile file={field.value} alt="사업자 등록증" />
                   </div>
-                  <BusinessFile file={field.value} alt="사업자 등록증" />
                 </FormLabel>
                 <FormControl className="hidden">
                   <Input
