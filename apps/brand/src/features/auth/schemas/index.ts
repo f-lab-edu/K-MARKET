@@ -50,11 +50,13 @@ export const signUpFormSchema = z
     businessAddress: z
       .string()
       .min(1, { message: "사업장 주소를 입력해 주세요." }),
-    businessRegCert: z.string().regex(imageRegex, {
-      message:
-        "사업자 등록증 파일은 JPG, JPEG, PNG 또는 PDF 형식이어야 합니다.",
-    }),
-    idCard: z.string().regex(imageRegex, {
+    businessRegCert: z
+      .instanceof(File)
+      .refine((file) => imageRegex.test(file.name), {
+        message:
+          "사업자 등록증 파일은 JPG, JPEG, PNG 또는 PDF 형식이어야 합니다.",
+      }),
+    idCard: z.instanceof(File).refine((file) => imageRegex.test(file.name), {
       message: "신분증 파일은 JPG, JPEG, PNG 또는 PDF 형식이어야 합니다.",
     }),
   })

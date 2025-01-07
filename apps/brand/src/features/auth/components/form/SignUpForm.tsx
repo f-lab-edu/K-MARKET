@@ -14,12 +14,18 @@ import { Button } from "@repo/ui/components/button";
 import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import { signUpFormSchema } from "@/features/auth/schemas";
+import { useToast } from "@repo/ui/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { signup } from "@/features/auth/server/actions/signup.ts";
 import SignUpInputWithLabel from "@/features/auth/components/SignUpInputWithLabel.tsx";
 import { Badge } from "@repo/ui/components/badge";
-import { Camera } from "lucide-react";
 import { Input } from "@repo/ui/components/input";
+import { Camera } from "lucide-react";
+import Image from "next/image";
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
@@ -33,13 +39,28 @@ const SignUpForm = () => {
       ceoName: "",
       businessNumber: "",
       businessAddress: "",
-      businessRegCert: "",
-      idCard: "",
     },
   });
 
-  const handleSubmit = (value: z.infer<typeof signUpFormSchema>) => {
-    console.log(value);
+  const handleSubmit = async (value: z.infer<typeof signUpFormSchema>) => {
+    const result = await signup(value);
+
+    if (!result?.data) {
+      return toast({
+        title: result.message,
+        variant: "destructive",
+        duration: 1000,
+      });
+    }
+    return toast({
+      title: result.message,
+      duration: 2000,
+      action: (
+        <Button variant="link" size="sm" onClick={() => router.push("/")}>
+          로그인 페이지로 이동
+        </Button>
+      ),
+    });
   };
 
   return (
@@ -168,7 +189,7 @@ const SignUpBusinessField = () => {
       />
       <FormField
         control={form.control}
-        name="brandNameEn"
+        name="ceoName"
         render={({ field }) => (
           <SignUpInputWithLabel
             label="대표자명"
@@ -205,8 +226,28 @@ const SignUpBusinessField = () => {
     </section>
   );
 };
+
 const SignUpFileField = () => {
   const form = useFormContext();
+  const { toast } = useToast();
+
+  const convertFileObject = (event: React.ChangeEvent<HTMLInputElement>) => {
+    return event.target.files?.[0];
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const allowedFormats = ["image/jpeg", "image/png"];
+
+    const file = convertFileObject(event);
+    if (file && !allowedFormats.includes(file.type)) {
+      return toast({
+        title: "JPG 또는 PNG 형식의 파일만 업로드 가능합니다.",
+        variant: "destructive",
+        duration: 1000,
+      });
+    }
+    return convertFileObject(event);
+  };
   return (
     <section>
       <h3 className="text-lg font-bold border-b border-b-black py-2">
@@ -235,13 +276,18 @@ const SignUpFileField = () => {
               <FormItem>
                 <FormLabel>
                   <Badge variant="destructive">첨부1</Badge> 사업자 등록증
-                  <div className="flex flex-col gap-2 items-center justify-center mt-2 w-32 h-32 bg-gray-200 rounded">
-                    <Camera size={24} />
-                    <span className="text-gray-500">파일 첨부</span>
+                  <div className="relative flex flex-col gap-2 items-center justify-center mt-2 w-32 h-32 bg-gray-200 rounded overflow-hidden">
+                    <BusinessFile file={field.value} alt="사업자 등록증" />
                   </div>
                 </FormLabel>
                 <FormControl className="hidden">
-                  <Input type="file" {...field} />
+                  <Input
+                    type="file"
+                    accept={".jpg, .jpeg, .png"}
+                    onChange={(event) =>
+                      field.onChange(handleImageUpload(event))
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -254,13 +300,18 @@ const SignUpFileField = () => {
               <FormItem>
                 <FormLabel>
                   <Badge variant="destructive">첨부2</Badge> 신분증
-                  <div className="flex flex-col gap-2 items-center justify-center mt-2 w-32 h-32 bg-gray-200 rounded">
-                    <Camera size={24} />
-                    <span className="text-gray-500">파일 첨부</span>
+                  <div className="relative flex flex-col gap-2 items-center justify-center mt-2 w-32 h-32 bg-gray-200 rounded overflow-hidden">
+                    <BusinessFile file={field.value} alt="신분증" />
                   </div>
                 </FormLabel>
                 <FormControl className="hidden">
-                  <Input type="file" {...field} />
+                  <Input
+                    type="file"
+                    accept={".jpg, .jpeg, .png"}
+                    onChange={(event) =>
+                      field.onChange(handleImageUpload(event))
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -270,4 +321,16 @@ const SignUpFileField = () => {
       </div>
     </section>
   );
+};
+
+const BusinessFile = ({ file, alt }: { file: File; alt: string }) => {
+  if (!file)
+    return (
+      <>
+        <Camera size={24} />
+        <span className="text-gray-500">파일 첨부</span>
+      </>
+    );
+  const url = URL.createObjectURL(file);
+  return <Image src={url} alt={alt} fill />;
 };
