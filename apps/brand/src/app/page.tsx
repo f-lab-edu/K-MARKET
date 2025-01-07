@@ -1,5 +1,5 @@
+import SidebarLayout from "@/shared/components/SidebarLayout.tsx";
+
 export default async function Home() {
-  return (
-    <section className="flex items-center justify-center h-screen"></section>
-  );
+  return <SidebarLayout>11</SidebarLayout>;
 }
