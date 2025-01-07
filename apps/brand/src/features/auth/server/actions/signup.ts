@@ -8,8 +8,8 @@ export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
     password: payload.password,
   });
   if (authError) {
-    const isReadyError = authError.code === "user_already_exists";
-    if (isReadyError) {
+    const isAlreadyExists = authError.code === "user_already_exists";
+    if (isAlreadyExists) {
       return {
         message: "이미 가입된 이메일 입니다.",
       };
@@ -29,7 +29,7 @@ export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
     registerBrand(payload, userId),
   ]);
 
-  const isError = userData.every((result) => !result.data);
+  const isError = userData.some((result) => !result.data);
   if (isError && userId) {
     await supabase.auth.admin.deleteUser(userId);
     return {
