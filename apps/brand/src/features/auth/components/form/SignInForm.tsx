@@ -16,8 +16,11 @@ import { z } from "zod";
 
 import Link from "next/link";
 import { signInFormSchema } from "@/features/auth/schemas";
+import { signIn } from "@/features/auth/server/actions/signin.ts";
+import { useToast } from "@repo/ui/hooks/use-toast";
 
 const SignInForm = () => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -26,8 +29,16 @@ const SignInForm = () => {
     },
   });
 
-  const handleSubmit = (value: z.infer<typeof signInFormSchema>) => {
-    console.log(value);
+  const handleSubmit = async (value: z.infer<typeof signInFormSchema>) => {
+    const error = await signIn(value);
+    if (error) {
+      toast({
+        title: "입력하신 이메일 또는 비밀번호를 확인해주세요.",
+        variant: "destructive",
+        duration: 2000,
+      });
+      return;
+    }
   };
 
   return (
