@@ -19,11 +19,11 @@ interface SidebarLayoutProps {
   children: React.ReactNode;
 }
 
-const SidebarLayout = ({ children }: SidebarLayoutProps) => {
+const SidebarLayout = ({children}: SidebarLayoutProps) => {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main>{children}</main>
+      <AppSidebar/>
+      <main className='p-2'>{children}</main>
     </SidebarProvider>
   );
 };
@@ -45,7 +45,9 @@ const AppSidebar = () => {
   ];
   return (
     <Sidebar>
-      <SidebarHeader />
+      <SidebarHeader>
+        <span className='font-bold text-3xl'>K-MARKET</span>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>상품</SidebarGroupLabel>
@@ -55,7 +57,7 @@ const AppSidebar = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
-                      <item.icon />
+                      <item.icon/>
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -65,7 +67,7 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter/>
     </Sidebar>
   );
 };
