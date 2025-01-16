@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase/client.ts";
+import { supabase } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { signInFormSchema } from "@/features/auth/schemas";

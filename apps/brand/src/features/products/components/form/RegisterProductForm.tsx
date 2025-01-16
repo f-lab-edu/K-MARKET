@@ -4,30 +4,20 @@ import { Form, FormField, FormLabel } from "@repo/ui/components/form";
 import { Button } from "@repo/ui/components/button";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { Input } from "@repo/ui/components/input";
-import { Checkbox } from "@repo/ui/components/checkbox.tsx";
+import { Checkbox } from "@repo/ui/components/checkbox";
 import { Edit, Plus, Trash } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@repo/ui/lib/utils.ts";
+import { cn } from "@repo/ui/lib/utils";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/components/select.tsx";
+} from "@repo/ui/components/select";
 import { z } from "zod";
 import { registerProductFormSchema } from "@/features/products/components/schemas";
 import { ChangeEvent } from "react";
-
-type RegisterProductFormSchema = {
-  category: string;
-  name: string;
-  useOptions: boolean;
-  price: string;
-  options: { name: string; price: string }[];
-  images: { file: File; previewUrl: string; isMain: boolean }[];
-  details: { file: File; previewUrl: string }[];
-};
 
 const RegisterProductForm = () => {
   const form = useForm<z.infer<typeof registerProductFormSchema>>({
@@ -132,6 +122,7 @@ const ImagesField = () => {
   const MAX_IMAGES = 10;
 
   const form = useFormContext<z.infer<typeof registerProductFormSchema>>();
+
   const {
     fields: imageFields,
     append: appendImage,
@@ -142,7 +133,6 @@ const ImagesField = () => {
     name: "images",
   });
 
-  console.log(imageFields, "imageFields");
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
@@ -193,8 +183,9 @@ const ImagesField = () => {
     });
   };
   const handleDeleteImage = (index: number) => {
-    const isCurrentMain = imageFields[index].isMain;
+    const isCurrentMain = imageFields[index]?.isMain;
     const isFirstImage = index === 0;
+
     if (isCurrentMain) {
       updateImage(0, {
         ...imageFields[0],
@@ -327,7 +318,7 @@ const OptionField = () => {
 const DetailField = () => {
   const MAX_IMAGES = 20;
 
-  const form = useFormContext<RegisterProductFormSchema>();
+  const form = useFormContext<z.infer<typeof registerProductFormSchema>>();
   const {
     fields: imageFields,
     append: appendImage,
@@ -421,18 +412,19 @@ const ImageUpload = ({
 };
 
 interface ImageFileProps {
-  previewUrl: string;
-  alt: string;
+  previewUrl?: string;
+  alt?: string;
   onEdit: (event: ChangeEvent<HTMLInputElement>) => void;
   onDelete: () => void;
 }
 
 const ImageFile = ({ previewUrl, alt, onEdit, onDelete }: ImageFileProps) => {
+  if (!previewUrl) return null;
   return (
     <div className={cn("min-w-40 min-h-40 relative border rounded-lg")}>
       <Image
         src={previewUrl}
-        alt={alt}
+        alt={alt || "이미지"}
         width={158}
         height={158}
         className="object-cover w-full h-40 rounded"

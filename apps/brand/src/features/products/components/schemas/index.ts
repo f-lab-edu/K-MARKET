@@ -10,9 +10,9 @@ export const registerProductFormSchema = z.object({
     .optional(),
   images: z.array(
     z.object({
-      file: z.instanceof(File),
-      previewUrl: z.string().url(),
-      isMain: z.boolean(),
+      file: z.instanceof(File).optional(),
+      previewUrl: z.string().url().optional(),
+      isMain: z.boolean().optional(),
     }),
   ),
   details: z.array(

@@ -1,5 +1,5 @@
-import Title from "@/shared/components/Header.tsx";
-import RegisterProductForm from "@/features/products/components/form/RegisterProductForm.tsx";
+import Title from "@/shared/components/Header";
+import RegisterProductForm from "@/features/products/components/form/RegisterProductForm";
 
 const Products = () => {
   return (

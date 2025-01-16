@@ -15,7 +15,7 @@ import { z } from "zod";
 
 import Link from "next/link";
 import { signInFormSchema } from "@/features/auth/schemas";
-import { signIn } from "@/features/auth/server/actions/signin.ts";
+import { signIn } from "@/features/auth/server/actions/signin";
 import { useToast } from "@repo/ui/hooks/use-toast";
 
 const SignInForm = () => {

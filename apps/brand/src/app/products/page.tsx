@@ -1,5 +1,5 @@
-import Title from "@/shared/components/Header.tsx";
-import { Button } from "@repo/ui/components/button.tsx";
+import Title from "@/shared/components/Header";
+import { Button } from "@repo/ui/components/button";
 import Link from "next/link";
 
 const Products = () => {
