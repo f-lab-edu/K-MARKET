@@ -19,11 +19,11 @@ interface SidebarLayoutProps {
   children: React.ReactNode;
 }
 
-const SidebarLayout = ({children}: SidebarLayoutProps) => {
+const SidebarLayout = ({ children }: SidebarLayoutProps) => {
   return (
     <SidebarProvider>
-      <AppSidebar/>
-      <main className='p-2'>{children}</main>
+      <AppSidebar />
+      <main className="px-5 py-2 w-full">{children}</main>
     </SidebarProvider>
   );
 };
@@ -46,7 +46,7 @@ const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <span className='font-bold text-3xl'>K-MARKET</span>
+        <span className="font-bold text-3xl">K-MARKET</span>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -57,7 +57,7 @@ const AppSidebar = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
-                      <item.icon/>
+                      <item.icon />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -67,7 +67,7 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter/>
+      <SidebarFooter />
     </Sidebar>
   );
 };
