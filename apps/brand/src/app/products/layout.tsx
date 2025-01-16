@@ -1,7 +1,7 @@
 import SidebarLayout from "@/shared/components/SidebarLayout";
 
 interface ProductsLayoutProps {
-  readonly children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export default function ProductsLayout({ children }: ProductsLayoutProps) {
