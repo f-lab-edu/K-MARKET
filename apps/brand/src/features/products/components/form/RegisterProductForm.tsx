@@ -17,7 +17,6 @@ import {
 } from "@repo/ui/components/select";
 import { z } from "zod";
 import { registerProductFormSchema } from "@/features/products/components/schemas";
-import { ChangeEvent } from "react";
 
 const RegisterProductForm = () => {
   const form = useForm<z.infer<typeof registerProductFormSchema>>({
@@ -320,10 +319,10 @@ const DetailField = () => {
 
   const form = useFormContext<z.infer<typeof registerProductFormSchema>>();
   const {
-    fields: imageFields,
-    append: appendImage,
-    remove: removeImage,
-    update: updateImage,
+    fields: detailImageFields,
+    append: appendDetailImage,
+    remove: removeDetailImage,
+    update: updateDetailImage,
   } = useFieldArray({
     control: form.control,
     name: "details",
@@ -334,14 +333,14 @@ const DetailField = () => {
 
     const newImages = Array.from(event.target.files);
 
-    if (imageFields.length + newImages.length > MAX_IMAGES) {
+    if (detailImageFields.length + newImages.length > MAX_IMAGES) {
       alert(`최대 ${MAX_IMAGES}개의 이미지만 업로드할 수 있습니다.`);
       return;
     }
 
     newImages.forEach((file: File, index) => {
       const imageUrl = URL.createObjectURL(file);
-      appendImage({
+      appendDetailImage({
         file,
         previewUrl: imageUrl,
       });
@@ -355,14 +354,14 @@ const DetailField = () => {
     const file = event.target.files?.[0];
     if (!file) return;
     const imageUrl = URL.createObjectURL(file);
-    updateImage(index, {
-      ...imageFields[index],
+    updateDetailImage(index, {
+      ...detailImageFields[index],
       file,
       previewUrl: imageUrl,
     });
   };
   const handleDeleteImage = (index: number) => {
-    removeImage(index);
+    removeDetailImage(index);
   };
 
   return (
@@ -371,7 +370,7 @@ const DetailField = () => {
         최대 {MAX_IMAGES}개의 이미지를 업로드할 수 있습니다.
       </p>
       <div className="flex gap-4 flex-wrap items-center">
-        {imageFields?.map((field, index) => {
+        {detailImageFields?.map((field, index) => {
           if (!field.previewUrl) {
             return null;
           }
@@ -414,7 +413,7 @@ const ImageUpload = ({
 interface ImageFileProps {
   previewUrl?: string;
   alt?: string;
-  onEdit: (event: ChangeEvent<HTMLInputElement>) => void;
+  onEdit: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onDelete: () => void;
 }
 
