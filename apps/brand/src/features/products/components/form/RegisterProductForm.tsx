@@ -5,7 +5,7 @@ import { Button } from "@repo/ui/components/button";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { Input } from "@repo/ui/components/input";
 import { Checkbox } from "@repo/ui/components/checkbox.tsx";
-import { Edit, Plus, Trash, Upload } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@repo/ui/lib/utils.ts";
 import {
@@ -15,6 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/components/select.tsx";
+import { z } from "zod";
+import { registerProductFormSchema } from "@/features/products/components/schemas";
+import { ChangeEvent } from "react";
 
 type RegisterProductFormSchema = {
   category: string;
@@ -27,7 +30,7 @@ type RegisterProductFormSchema = {
 };
 
 const RegisterProductForm = () => {
-  const form = useForm<RegisterProductFormSchema>({
+  const form = useForm<z.infer<typeof registerProductFormSchema>>({
     defaultValues: {
       category: "",
       name: "",
@@ -35,6 +38,7 @@ const RegisterProductForm = () => {
       price: "",
       options: [{ name: "", price: "" }],
       images: [],
+      details: [],
     },
   });
 
@@ -127,7 +131,7 @@ export default RegisterProductForm;
 const ImagesField = () => {
   const MAX_IMAGES = 10;
 
-  const form = useFormContext<RegisterProductFormSchema>();
+  const form = useFormContext<z.infer<typeof registerProductFormSchema>>();
   const {
     fields: imageFields,
     append: appendImage,
@@ -138,6 +142,7 @@ const ImagesField = () => {
     name: "images",
   });
 
+  console.log(imageFields, "imageFields");
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
@@ -209,91 +214,52 @@ const ImagesField = () => {
 
   return (
     <Group title="상품 이미지" isRequired>
+      <p className="text-sm text-gray-500 mt-1">
+        최대 {MAX_IMAGES}개의 이미지를 업로드할 수 있습니다.
+      </p>
       <div>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <Upload className="w-5 h-5" />
-          <span className="text-blue-500">이미지 업로드</span>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
-        </label>
-        <p className="text-sm text-gray-500 mt-2">
-          최대 {MAX_IMAGES}개의 이미지를 업로드할 수 있습니다.
-        </p>
-      </div>
-
-      {imageFields.length > 0 && (
-        <div className="grid grid-cols-5 gap-4 mt-4">
-          {imageFields.map((field, index) => {
-            if (!field.previewUrl) {
-              return null;
-            }
-
+        <div className="flex gap-4 flex-wrap items-center">
+          {imageFields?.map((field, index) => {
             return (
               <div
                 key={field.id}
                 className={cn(
-                  "relative p-2 border rounded-lg",
+                  "min-w-40 min-h-40 relative border rounded-lg",
                   field.isMain ? "border-blue-500" : "border-gray-300",
                 )}
               >
-                <Image
-                  src={field.previewUrl}
-                  alt={`상품 이미지 ${index + 1}`}
-                  width={200}
-                  height={200}
-                  className="object-cover w-full h-40 rounded"
-                />
                 {field.isMain && (
-                  <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                  <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded z-40">
                     대표 이미지
                   </div>
                 )}
                 {!field.isMain && (
                   <button
                     type="button"
-                    className="absolute top-2 right-2 bg-white text-blue-500 text-xs px-2 py-1 rounded shadow-md"
+                    className="absolute top-2 right-2 bg-white text-blue-500 text-xs px-2 py-1 rounded shadow-md z-40"
                     onClick={() => handleSetMainImage(index)}
                   >
                     대표 설정
                   </button>
                 )}
-                <div className="flex gap-2 absolute bottom-2 right-2">
-                  <label className="bg-white text-xs px-2 py-1 rounded shadow-md cursor-pointer">
-                    <Edit className="w-4 h-4 inline-block mr-1" />
-                    수정
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={(event) => handleEditImage(event, index)}
-                      className="hidden"
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    className=" bg-red-500 text-white text-xs px-2 py-1 rounded shadow-md"
-                    onClick={() => handleDeleteImage(index)}
-                  >
-                    <Trash className="w-4 h-4 inline-block mr-1" />
-                    삭제
-                  </button>
-                </div>
+                <ImageFile
+                  previewUrl={field.previewUrl}
+                  alt="상품이미지"
+                  onEdit={(e) => handleEditImage(e, index)}
+                  onDelete={() => handleDeleteImage(index)}
+                />
               </div>
             );
           })}
+          <ImageUpload onChange={handleImageUpload} />
         </div>
-      )}
+      </div>
     </Group>
   );
 };
 
 const OptionField = () => {
-  const form = useFormContext<RegisterProductFormSchema>();
+  const form = useFormContext<z.infer<typeof registerProductFormSchema>>();
   const useOptions = form.watch("useOptions");
   const {
     fields: optionFields,
@@ -410,73 +376,92 @@ const DetailField = () => {
 
   return (
     <Group title="상품 설명" isRequired>
-      <div>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <Upload className="w-5 h-5" />
-          <span className="text-blue-500">이미지 업로드</span>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
-        </label>
-        <p className="text-sm text-gray-500 mt-2">
-          최대 {MAX_IMAGES}개의 이미지를 업로드할 수 있습니다.
-        </p>
+      <p className="text-sm text-gray-500 mt-2">
+        최대 {MAX_IMAGES}개의 이미지를 업로드할 수 있습니다.
+      </p>
+      <div className="flex gap-4 flex-wrap items-center">
+        {imageFields?.map((field, index) => {
+          if (!field.previewUrl) {
+            return null;
+          }
+
+          return (
+            <ImageFile
+              key={field.id}
+              previewUrl={field.previewUrl}
+              onEdit={(event) => handleEditImage(event, index)}
+              alt="상품 이미지"
+              onDelete={() => handleDeleteImage(index)}
+            />
+          );
+        })}
+        <ImageUpload onChange={handleImageUpload} />
       </div>
-
-      {imageFields.length > 0 && (
-        <div className="grid grid-cols-5 gap-4 mt-4">
-          {imageFields.map((field, index) => {
-            if (!field.previewUrl) {
-              return null;
-            }
-
-            return (
-              <div
-                key={field.id}
-                className={cn("relative p-2 border rounded-lg")}
-              >
-                <Image
-                  src={field.previewUrl}
-                  alt={`상품 이미지 ${index + 1}`}
-                  width={200}
-                  height={200}
-                  className="object-cover w-full h-40 rounded"
-                />
-
-                <div className="flex gap-2 absolute bottom-2 right-2">
-                  <label className="bg-white text-xs px-2 py-1 rounded shadow-md cursor-pointer">
-                    <Edit className="w-4 h-4 inline-block mr-1" />
-                    수정
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={(event) => handleEditImage(event, index)}
-                      className="hidden"
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    className=" bg-red-500 text-white text-xs px-2 py-1 rounded shadow-md"
-                    onClick={() => handleDeleteImage(index)}
-                  >
-                    <Trash className="w-4 h-4 inline-block mr-1" />
-                    삭제
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </Group>
   );
 };
 
+const ImageUpload = ({
+  onChange,
+}: {
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return (
+    <label className="min-w-40 min-h-40  flex justify-center items-center rounded-xl  border-dashed border-2 cursor-pointer">
+      <Plus size={40} />
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        onChange={onChange}
+        className="hidden"
+      />
+    </label>
+  );
+};
+
+interface ImageFileProps {
+  previewUrl: string;
+  alt: string;
+  onEdit: (event: ChangeEvent<HTMLInputElement>) => void;
+  onDelete: () => void;
+}
+
+const ImageFile = ({ previewUrl, alt, onEdit, onDelete }: ImageFileProps) => {
+  return (
+    <div className={cn("min-w-40 min-h-40 relative border rounded-lg")}>
+      <Image
+        src={previewUrl}
+        alt={alt}
+        width={158}
+        height={158}
+        className="object-cover w-full h-40 rounded"
+      />
+
+      <div className="flex gap-2 absolute bottom-2 right-2">
+        <label className="bg-white text-xs px-2 py-1 rounded shadow-md cursor-pointer">
+          <Edit className="w-4 h-4 inline-block mr-1" />
+          수정
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={onEdit}
+            className="hidden"
+          />
+        </label>
+        <button
+          type="button"
+          className=" bg-red-500 text-white text-xs px-2 py-1 rounded shadow-md"
+          onClick={onDelete}
+        >
+          <Trash className="w-4 h-4 inline-block mr-1" />
+          삭제
+        </button>
+      </div>
+    </div>
+  );
+};
 const Group = ({
   title,
   isRequired,
