@@ -1,8 +1,11 @@
 import Title from "@/shared/components/Header";
 import { Button } from "@repo/ui/components/button";
 import Link from "next/link";
+import { getProducts } from "@/features/products/server/actions/products";
 
-const Products = () => {
+const Products = async () => {
+  const products = await getProducts();
+  console.log(products, "products");
   return (
     <div>
       <div className="flex justify-between">

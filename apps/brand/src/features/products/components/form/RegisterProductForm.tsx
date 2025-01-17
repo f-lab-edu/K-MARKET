@@ -1,6 +1,13 @@
 "use client";
 
-import { Form, FormField, FormLabel } from "@repo/ui/components/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@repo/ui/components/form";
 import { Button } from "@repo/ui/components/button";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { Input } from "@repo/ui/components/input";
@@ -17,10 +24,18 @@ import {
 } from "@repo/ui/components/select";
 import { z } from "zod";
 import { registerProductFormSchema } from "@/features/products/components/schemas";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Category } from "@/features/products/types/categories";
+import { registerProduct } from "@/features/products/server/actions/products";
 
-const RegisterProductForm = () => {
+interface RegisterProductFormProps {
+  categories: Category[];
+}
+
+const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
   const form = useForm<z.infer<typeof registerProductFormSchema>>({
+    resolver: zodResolver(registerProductFormSchema),
     defaultValues: {
       category: "",
       name: "",
@@ -32,8 +47,11 @@ const RegisterProductForm = () => {
     },
   });
 
-  const handleSubmit = async (value: any) => {
-    console.log("상품 데이터:", value);
+  const handleSubmit = async (
+    value: z.infer<typeof registerProductFormSchema>,
+  ) => {
+    const result = await registerProduct(value);
+    console.log(result);
   };
 
   return (
@@ -47,15 +65,31 @@ const RegisterProductForm = () => {
             control={form.control}
             name="category"
             render={({ field }) => (
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger>
-                  <SelectValue placeholder="카테고리" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="goods">잡화</SelectItem>
-                  <SelectItem value="cosmetics">화장품</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormItem>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="카테고리" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => {
+                        return (
+                          <SelectItem
+                            key={category.id}
+                            value={`${category.id}`}
+                          >
+                            {category.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
         </Group>
@@ -64,12 +98,17 @@ const RegisterProductForm = () => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <Input
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="상품명을 입력하세요"
-                className="bg-white"
-              />
+              <FormItem>
+                <FormControl>
+                  <Input
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="상품명을 입력하세요"
+                    className="bg-white"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
         </Group>
@@ -79,12 +118,17 @@ const RegisterProductForm = () => {
             control={form.control}
             name="price"
             render={({ field }) => (
-              <Input
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="상품 가격을 입력하세요"
-                className="bg-white"
-              />
+              <FormItem>
+                <FormControl>
+                  <Input
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="상품 가격을 입력하세요"
+                    className="bg-white"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
         </Group>
@@ -245,6 +289,7 @@ const ImagesField = () => {
           <ImageUpload onChange={handleImageUpload} />
         </div>
       </div>
+      <FormMessage>{form.formState.errors?.images?.message}</FormMessage>
     </Group>
   );
 };
@@ -256,10 +301,17 @@ const OptionField = () => {
     fields: optionFields,
     append: appendOption,
     remove: removeOption,
+    replace: replaceOption,
   } = useFieldArray({
     control: form.control,
     name: "options",
   });
+
+  useEffect(() => {
+    if (useOptions) return;
+    replaceOption([{ name: "", price: "" }]);
+  }, [useOptions]);
+
   if (!useOptions) {
     return null;
   }
@@ -388,10 +440,10 @@ const DetailField = () => {
         })}
         <ImageUpload onChange={handleImageUpload} />
       </div>
+      <FormMessage>{form.formState.errors?.details?.message}</FormMessage>
     </Group>
   );
 };
-
 const ImageUpload = ({
   onChange,
 }: {
