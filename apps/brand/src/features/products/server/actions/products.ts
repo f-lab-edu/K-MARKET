@@ -2,6 +2,7 @@ import { z } from "zod";
 import { registerProductFormSchema } from "@/features/products/components/schemas";
 import { supabase } from "@/utils/supabase/client";
 import { uploadFileAndGetUrl } from "@/utils/file";
+import { Product } from "@/features/products/types/products";
 
 /**
  * 상품 등록
@@ -21,8 +22,8 @@ export const registerProduct = async (
     ),
     options: productData.useOptions && mapOptions(productData.options),
     images: [
-      ...mapImages(productData.images, "main"),
-      ...mapImages(productData.details, "detail"),
+      ...(await mapImages(productData.images, "main")),
+      ...(await mapImages(productData.details, "detail")),
     ],
   });
   if (error) {
@@ -49,26 +50,28 @@ const mapOptions = (
   });
 };
 
-const mapImages = (
+const mapImages = async (
   images: z.infer<typeof registerProductFormSchema>["details" | "images"],
   type: string,
 ) => {
-  return images.map(async (image, index) => {
-    if (!image.file) return;
+  return await Promise.all(
+    images.map(async (image, index) => {
+      if (!image.file) return;
 
-    return {
-      image_url: await uploadFileAndGetUrl(image.file, "products"),
-      sort_order: index,
-      type,
-    };
-  });
+      return {
+        image_url: await uploadFileAndGetUrl(image.file, "products"),
+        sort_order: index,
+        type,
+      };
+    }),
+  );
 };
 
 /**
  * 상품 조회
  * **/
 
-export const getProducts = async () => {
+export const getProducts = async (): Promise<Product[]> => {
   const { data, error } = await supabase.from("products").select("*");
 
   if (error) {

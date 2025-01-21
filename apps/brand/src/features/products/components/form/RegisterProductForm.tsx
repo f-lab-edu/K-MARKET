@@ -51,7 +51,6 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
     value: z.infer<typeof registerProductFormSchema>,
   ) => {
     const result = await registerProduct(value);
-    console.log(result);
   };
 
   return (
