@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@repo/ui/components/table";
 import Image from "next/image";
+import { Button } from "@repo/ui/components/button";
 
 interface ProductListProps {
   products: Product[];
@@ -19,23 +20,31 @@ const ProductList = ({ products }: ProductListProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
+          <TableHead>이미지</TableHead>
+          <TableHead>상품 이름</TableHead>
+          <TableHead>가격</TableHead>
+          <TableHead className="w-10"></TableHead>
+          <TableHead className="w-10"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {products.map((product) => (
           <TableRow key={product.id}>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>{product.price}</TableCell>
             <TableCell>
               <Image
                 src={product.main_image_url}
                 alt={product.name}
-                width={120}
-                height={120}
+                width={100}
+                height={100}
               />
+            </TableCell>
+            <TableCell>{product.name}</TableCell>
+            <TableCell>{product.price}</TableCell>
+            <TableCell>
+              <Button variant="secondary">수정</Button>
+            </TableCell>
+            <TableCell>
+              <Button variant="destructive">삭제</Button>
             </TableCell>
           </TableRow>
         ))}
