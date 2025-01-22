@@ -1,4 +1,4 @@
-import SignInForm from "@/features/auth/components/form/SignInForm.tsx";
+import SignInForm from "@/features/auth/components/form/SignInForm";
 
 export default async function Home() {
   return (

@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -16,8 +15,8 @@ import { z } from "zod";
 import { signUpFormSchema } from "@/features/auth/schemas";
 import { useToast } from "@repo/ui/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { signup } from "@/features/auth/server/actions/signup.ts";
-import SignUpInputWithLabel from "@/features/auth/components/SignUpInputWithLabel.tsx";
+import { signup } from "@/features/auth/server/actions/signup";
+import SignUpInputWithLabel from "@/features/auth/components/SignUpInputWithLabel";
 import { Badge } from "@repo/ui/components/badge";
 import { Input } from "@repo/ui/components/input";
 import { Camera } from "lucide-react";

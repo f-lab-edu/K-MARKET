@@ -1,6 +1,7 @@
-import { supabase } from "@/utils/supabase/client.ts";
+import { supabase } from "@/utils/supabase/client";
 import { z } from "zod";
 import { signUpFormSchema } from "@/features/auth/schemas";
+import { uploadFileAndGetUrl } from "@/utils/file";
 
 export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
   const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -55,8 +56,14 @@ const registerBrand = async (
   payload: z.infer<typeof signUpFormSchema>,
   id: string,
 ) => {
-  const businessLicenseUrl = await uploadFile(payload.businessRegCert);
-  const idCardUrl = await uploadFile(payload.idCard);
+  const businessLicenseUrl = await uploadFileAndGetUrl(
+    payload.businessRegCert,
+    "business-documents",
+  );
+  const idCardUrl = await uploadFileAndGetUrl(
+    payload.idCard,
+    "business-documents",
+  );
 
   const { data, error } = await supabase.from("brands").insert({
     id: id,
@@ -69,22 +76,4 @@ const registerBrand = async (
     id_card: idCardUrl,
   });
   return { data, error };
-};
-
-const uploadFile = async (file: File) => {
-  if (!file) return null;
-
-  const fileExt = file.name.split(".").pop(); // 파일 확장자 추출
-  const fileName = `${Date.now()}.${fileExt}`;
-
-  const { data, error } = await supabase.storage
-    .from("business-documents")
-    .upload(fileName, file);
-
-  if (error) {
-    throw new Error("파일 업로드 실패");
-  }
-  return supabase.storage
-    .from("business-documents")
-    .getPublicUrl(`${data!.path}`).data.publicUrl;
 };
