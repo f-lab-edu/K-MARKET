@@ -1,5 +1,5 @@
 "use client";
-import { FileUp, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -36,11 +36,6 @@ const AppSidebar = () => {
       icon: Search,
       url: "/products",
       title: "상품 조회/수정",
-    },
-    {
-      icon: FileUp,
-      url: "/products/register",
-      title: "상품 등록",
     },
   ];
   return (

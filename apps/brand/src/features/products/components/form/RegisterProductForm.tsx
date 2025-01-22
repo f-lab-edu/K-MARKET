@@ -24,7 +24,7 @@ import {
 } from "@repo/ui/components/select";
 import { z } from "zod";
 import { registerProductFormSchema } from "@/features/products/components/schemas";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, ReactNode, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@/features/products/types/categories";
 import { registerProduct } from "@/features/products/server/actions/products";
@@ -176,7 +176,7 @@ const ImagesField = () => {
     name: "images",
   });
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
     const newImages = Array.from(event.target.files);
@@ -213,7 +213,7 @@ const ImagesField = () => {
   };
 
   const handleEditImage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
     const file = event.target.files?.[0];
@@ -380,7 +380,7 @@ const DetailField = () => {
     name: "details",
   });
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
     const newImages = Array.from(event.target.files);
@@ -390,7 +390,7 @@ const DetailField = () => {
       return;
     }
 
-    newImages.forEach((file: File, index) => {
+    newImages.forEach((file: File) => {
       const imageUrl = URL.createObjectURL(file);
       appendImage({
         file,
@@ -400,7 +400,7 @@ const DetailField = () => {
   };
 
   const handleEditImage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
     const file = event.target.files?.[0];
@@ -446,7 +446,7 @@ const DetailField = () => {
 const ImageUpload = ({
   onChange,
 }: {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <label className="min-w-40 min-h-40  flex justify-center items-center rounded-xl  border-dashed border-2 cursor-pointer">
@@ -512,7 +512,7 @@ const Group = ({
 }: {
   title: string;
   isRequired?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => (
   <div className="flex flex-col gap-2">
     <div className="flex items-center gap-1">
