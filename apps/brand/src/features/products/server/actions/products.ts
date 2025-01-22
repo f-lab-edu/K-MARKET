@@ -1,31 +1,31 @@
-import { z } from "zod";
-import { registerProductFormSchema } from "@/features/products/components/schemas";
-import { supabase } from "@/utils/supabase/client";
-import { uploadFileAndGetUrl } from "@/utils/file";
-import { Product } from "@/features/products/types/products";
-import { findCategory } from "./categories";
-import { formatDate } from "@/utils/date";
-import { formatKRWPrice } from "@/utils/price";
+import { z } from 'zod';
+import { registerProductFormSchema } from '@/features/products/components/schemas';
+import { supabase } from '@/utils/supabase/client';
+import { uploadFileAndGetUrl } from '@/utils/file';
+import { Product } from '@/features/products/types/products';
+import { findCategory } from './categories';
+import { formatDate } from '@/utils/date';
+import { formatKRWPrice } from '@/utils/price';
 /**
  * 상품 등록
  * **/
 export const registerProduct = async (
-  productData: z.infer<typeof registerProductFormSchema>
+  productData: z.infer<typeof registerProductFormSchema>,
 ) => {
   if (!productData) return;
 
-  const { data, error } = await supabase.rpc("insert_product_with_details", {
+  const { data, error } = await supabase.rpc('insert_product_with_details', {
     category_id: Number(productData.category), // 카테고리 ID
     product_name: productData.name,
     product_price: Number(productData.price), // 상품 가격
     main_image_url: await uploadFileAndGetUrl(
       findMainImage(productData.images) as File,
-      "products"
+      'products',
     ),
     options: productData.useOptions && mapOptions(productData.options),
     images: [
-      ...(await mapImages(productData.images, "main")),
-      ...(await mapImages(productData.details, "detail")),
+      ...(await mapImages(productData.images, 'main')),
+      ...(await mapImages(productData.details, 'detail')),
     ],
   });
   if (error) {
@@ -36,13 +36,13 @@ export const registerProduct = async (
 };
 
 const findMainImage = (
-  images: z.infer<typeof registerProductFormSchema>["images"]
+  images: z.infer<typeof registerProductFormSchema>['images'],
 ) => {
   return images.find((image) => image.isMain)?.file;
 };
 
 const mapOptions = (
-  options: z.infer<typeof registerProductFormSchema>["options"]
+  options: z.infer<typeof registerProductFormSchema>['options'],
 ) => {
   return options.map((option) => {
     return {
@@ -53,19 +53,19 @@ const mapOptions = (
 };
 
 const mapImages = async (
-  images: z.infer<typeof registerProductFormSchema>["details" | "images"],
-  type: string
+  images: z.infer<typeof registerProductFormSchema>['details' | 'images'],
+  type: string,
 ) => {
   return await Promise.all(
     images.map(async (image, index) => {
       if (!image.file) return;
 
       return {
-        image_url: await uploadFileAndGetUrl(image.file, "products"),
+        image_url: await uploadFileAndGetUrl(image.file, 'products'),
         sort_order: index,
         type,
       };
-    })
+    }),
   );
 };
 
@@ -74,8 +74,11 @@ const mapImages = async (
  * **/
 
 export const getProducts = async (): Promise<Product[]> => {
-  const { data: products, error } = await supabase.from("products").select("*");
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('*, categories:category_id (name)');
 
+  console.log(products);
   if (error) {
     throw new Error(error.message);
   }
@@ -84,11 +87,11 @@ export const getProducts = async (): Promise<Product[]> => {
     products.map(async (product) => {
       return {
         ...product,
-        category_name: (await findCategory(product.category_id)).name,
+        category_name: product.categories.name,
         price: formatKRWPrice(product.price),
         created_at: formatDate(product.created_at),
         updated_at: formatDate(product.updated_at),
       };
-    })
+    }),
   );
 };
