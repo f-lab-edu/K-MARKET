@@ -1,6 +1,9 @@
 {
   "name": "@repo/typescript-config",
   "version": "0.0.0",
+  "dependencies": {
+    "typescript": "5.7.3"
+  },
   "private": true,
   "files": [
     "base.json",

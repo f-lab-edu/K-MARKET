@@ -7,8 +7,12 @@
     "@types/eslint": "^8.56.10",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.1",
     "eslint-config-turbo": "^1.13.3",
+    "eslint-plugin-boundaries": "^5.0.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-project-structure": "^3.13.0",
     "eslint-plugin-react": "^7.34.1"
   },
   "publishConfig": {
