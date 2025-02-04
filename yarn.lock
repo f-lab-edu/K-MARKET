@@ -791,21 +791,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@k-market/brand@workspace:apps/brand":
-  version: 0.0.0-use.local
-  resolution: "@k-market/brand@workspace:apps/brand"
-  dependencies:
-    "@repo/dependencies-config": "npm:*"
-    "@repo/dev-config": "npm:*"
-    "@repo/eslint-config": "npm:*"
-    "@repo/tailwind-config": "npm:*"
-    "@repo/typescript-config": "npm:*"
-    "@repo/ui": "npm:*"
-    vite-tsconfig-paths: "npm:^5.1.4"
-    vitest: "npm:^2.1.8"
-  languageName: unknown
-  linkType: soft
-
 "@next/env@npm:15.1.3":
   version: 15.1.3
   resolution: "@next/env@npm:15.1.3"
@@ -1573,23 +1558,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@repo/dependencies-config@npm:*, @repo/dependencies-config@workspace:packages/config-dependencies":
-  version: 0.0.0-use.local
-  resolution: "@repo/dependencies-config@workspace:packages/config-dependencies"
-  dependencies:
-    "@supabase/ssr": "npm:0.5.2"
-    "@supabase/supabase-js": "npm:2.47.10"
-    dayjs: "npm:1.11.13"
-    lucide-react: "npm:0.471.1"
-    next: "npm:15.1.3"
-    next-themes: "npm:0.4.3"
-    react: "npm:19.0.0"
-    react-dom: "npm:19.0.0"
-    react-hook-form: "npm:7.54.2"
-    zod: "npm:3.24.1"
-  languageName: unknown
-  linkType: soft
-
 "@repo/dev-config@npm:*, @repo/dev-config@workspace:packages/config-dev":
   version: 0.0.0-use.local
   resolution: "@repo/dev-config@workspace:packages/config-dev"
@@ -1604,6 +1572,8 @@ __metadata:
     jsdom: "npm:^25.0.1"
     postcss: "npm:^8"
     prettier: "npm:^3.4.2"
+    vite-tsconfig-paths: "npm:^5.1.4"
+    vitest: "npm:^2.1.8"
   languageName: unknown
   linkType: soft
 
@@ -2894,6 +2864,28 @@ __metadata:
   checksum: 10c0/7c6dfd30c338d2997ba77500539227b9d1f85e388a5f43220865201e407e076783d0881f2d297b9f80951b4c957fcf0b51c1d2d24227631643c3f7c284b0aa04
   languageName: node
   linkType: hard
+
+"brand@workspace:apps/brand":
+  version: 0.0.0-use.local
+  resolution: "brand@workspace:apps/brand"
+  dependencies:
+    "@repo/dev-config": "npm:*"
+    "@repo/eslint-config": "npm:*"
+    "@repo/tailwind-config": "npm:*"
+    "@repo/typescript-config": "npm:*"
+    "@repo/ui": "npm:*"
+    "@supabase/ssr": "npm:0.5.2"
+    "@supabase/supabase-js": "npm:2.47.10"
+    dayjs: "npm:1.11.13"
+    lucide-react: "npm:0.471.1"
+    next: "npm:15.1.3"
+    next-themes: "npm:0.4.3"
+    react: "npm:19.0.0"
+    react-dom: "npm:19.0.0"
+    react-hook-form: "npm:7.54.2"
+    zod: "npm:3.24.1"
+  languageName: unknown
+  linkType: soft
 
 "browserslist@npm:^4.23.3, browserslist@npm:^4.24.0":
   version: 4.24.4
@@ -6987,6 +6979,28 @@ __metadata:
   checksum: 10c0/a4bb1da406b613ce72c1299db43759526058fdcc413999c3c3e0db8956df7633acf395cb20eb2303b6a65d658d66b6585d344460abaee8080b4aa931f10eaafe
   languageName: node
   linkType: hard
+
+"seller@workspace:apps/seller":
+  version: 0.0.0-use.local
+  resolution: "seller@workspace:apps/seller"
+  dependencies:
+    "@repo/dev-config": "npm:*"
+    "@repo/eslint-config": "npm:*"
+    "@repo/tailwind-config": "npm:*"
+    "@repo/typescript-config": "npm:*"
+    "@repo/ui": "npm:*"
+    "@supabase/ssr": "npm:0.5.2"
+    "@supabase/supabase-js": "npm:2.47.10"
+    dayjs: "npm:1.11.13"
+    lucide-react: "npm:0.471.1"
+    next: "npm:15.1.3"
+    next-themes: "npm:0.4.3"
+    react: "npm:19.0.0"
+    react-dom: "npm:19.0.0"
+    react-hook-form: "npm:7.54.2"
+    zod: "npm:3.24.1"
+  languageName: unknown
+  linkType: soft
 
 "semver@npm:7.6.2":
   version: 7.6.2

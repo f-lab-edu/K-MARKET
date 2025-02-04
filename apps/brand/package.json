@@ -1,5 +1,5 @@
 {
-  "name": "@k-market/brand",
+  "name": "brand",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,15 +11,22 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "dependencies": {
-    "@repo/dependencies-config": "*"
+    "@repo/ui": "*",
+    "@supabase/ssr": "0.5.2",
+    "@supabase/supabase-js": "2.47.10",
+    "dayjs": "1.11.13",
+    "lucide-react": "0.471.1",
+    "next": "15.1.3",
+    "next-themes": "0.4.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hook-form": "7.54.2",
+    "zod": "3.24.1"
   },
   "devDependencies": {
     "@repo/dev-config": "*",
     "@repo/eslint-config": "*",
     "@repo/tailwind-config": "*",
-    "@repo/typescript-config": "*",
-    "@repo/ui": "*",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^2.1.8"
+    "@repo/typescript-config": "*"
   }
 }
