@@ -1,0 +1,17 @@
+{
+  "name": "@repo/dev-config",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^25.0.1",
+    "postcss": "^8",
+    "prettier": "^3.4.2"
+  },
+  "private": true
+}
