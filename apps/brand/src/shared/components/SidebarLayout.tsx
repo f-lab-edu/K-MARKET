@@ -1,5 +1,5 @@
-"use client";
-import { Search } from "lucide-react";
+'use client';
+import { Search } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,8 +12,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-} from "@repo/ui/components/sidebar";
-import Link from "next/link";
+} from '@repo/ui/components/sidebar';
+import Link from 'next/link';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -33,9 +33,9 @@ export default SidebarLayout;
 const AppSidebar = () => {
   const productItems = [
     {
-      icon: Search,
-      url: "/products",
-      title: "상품 조회/수정",
+    icon: Search,
+      url: '/products',
+      title: '상품 조회/수정',
     },
   ];
   return (

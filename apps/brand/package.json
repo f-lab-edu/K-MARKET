@@ -27,6 +27,7 @@
     "@repo/dev-config": "*",
     "@repo/eslint-config": "*",
     "@repo/tailwind-config": "*",
-    "@repo/typescript-config": "*"
+    "@repo/typescript-config": "*",
+    "prettier": "^3.4.2"
   }
 }
