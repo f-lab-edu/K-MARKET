@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Form,
@@ -7,27 +7,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@repo/ui/components/form";
-import { Button } from "@repo/ui/components/button";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
-import { Input } from "@repo/ui/components/input";
-import { Checkbox } from "@repo/ui/components/checkbox";
-import { Edit, Plus, Trash } from "lucide-react";
-import Image from "next/image";
-import { cn } from "@repo/ui/lib/utils";
+} from '@repo/ui/components/form';
+import { Button } from '@repo/ui/components/button';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { Input } from '@repo/ui/components/input';
+import { Checkbox } from '@repo/ui/components/checkbox';
+import { Edit, Plus, Trash } from 'lucide-react';
+import Image from 'next/image';
+import { cn } from '@repo/ui/lib/utils';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/components/select";
-import { z } from "zod";
-import { registerProductFormSchema } from "@/features/products/components/schemas";
-import { ChangeEvent, ReactNode, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Category } from "@/features/products/types/categories";
-import { registerProduct } from "@/features/products/server/actions/products";
+} from '@repo/ui/components/select';
+import { z } from 'zod';
+import { registerProductFormSchema } from '@/features/products/components/schemas';
+import { ChangeEvent, ReactNode, useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Category } from '@/features/products/types/categories';
+import { registerProduct } from '@/features/products/server/actions/products';
 
 interface RegisterProductFormProps {
   categories: Category[];
@@ -37,20 +37,23 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
   const form = useForm<z.infer<typeof registerProductFormSchema>>({
     resolver: zodResolver(registerProductFormSchema),
     defaultValues: {
-      category: "",
-      name: "",
+      category: '',
+      min_qty: 1,
+      name: '',
       useOptions: false,
-      price: "",
-      options: [{ name: "", price: "" }],
+      price: '',
+      discount_price: '',
+      options: [{ name: '', price: '' }],
       images: [],
       details: [],
     },
   });
 
   const handleSubmit = async (
-    value: z.infer<typeof registerProductFormSchema>,
+    values: z.infer<typeof registerProductFormSchema>,
   ) => {
-    const result = await registerProduct(value);
+    console.log(values);
+    const result = await registerProduct(values);
   };
 
   return (
@@ -131,6 +134,46 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
             )}
           />
         </Group>
+        <Group title="할인 상품 가격" isRequired>
+          <FormField
+            control={form.control}
+            name="discount_price"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="상품 가격을 입력하세요"
+                    className="bg-white"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </Group>
+        <Group title="최소 구매 수량" isRequired>
+          <FormField
+            control={form.control}
+            name="min_qty"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="number"
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="최소 구매 수량을 입력해주세요"
+                    className="bg-white"
+                    min={1}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </Group>
 
         <Group title="옵션 사용 여부">
           <FormField
@@ -173,7 +216,7 @@ const ImagesField = () => {
     update: updateImage,
   } = useFieldArray({
     control: form.control,
-    name: "images",
+    name: 'images',
   });
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -187,12 +230,12 @@ const ImagesField = () => {
     }
 
     newImages.forEach((file: File, index) => {
-      const isMain = imageFields.length < 1 && index === 0;
+      const type = imageFields.length < 1 && index === 0 ? 'main' : 'normal';
       const imageUrl = URL.createObjectURL(file);
       appendImage({
         file,
         previewUrl: imageUrl,
-        isMain,
+        type,
       });
     });
   };
@@ -202,12 +245,12 @@ const ImagesField = () => {
       if (imageIndex === index) {
         return updateImage(index, {
           ...image,
-          isMain: true,
+          type: 'main',
         });
       }
       updateImage(imageIndex, {
         ...image,
-        isMain: false,
+        type: 'normal',
       });
     });
   };
@@ -223,23 +266,24 @@ const ImagesField = () => {
       ...imageFields[index],
       file,
       previewUrl: imageUrl,
+      type: imageFields[index]?.type || 'normal',
     });
   };
   const handleDeleteImage = (index: number) => {
-    const isCurrentMain = imageFields[index]?.isMain;
+    const isCurrentMain = imageFields[index]?.type === 'main';
     const isFirstImage = index === 0;
 
     if (isCurrentMain) {
       updateImage(0, {
         ...imageFields[0],
-        isMain: true,
+        type: 'main',
       });
     }
 
     if (isFirstImage && imageFields.length > 1) {
       updateImage(index + 1, {
         ...imageFields[index + 1],
-        isMain: true,
+        type: 'main',
       });
     }
 
@@ -258,16 +302,16 @@ const ImagesField = () => {
               <div
                 key={field.id}
                 className={cn(
-                  "min-w-40 min-h-40 relative border rounded-lg",
-                  field.isMain ? "border-blue-500" : "border-gray-300",
+                  'min-w-40 min-h-40 relative border rounded-lg',
+                  field.type === 'main' ? 'border-blue-500' : 'border-gray-300',
                 )}
               >
-                {field.isMain && (
+                {field.type === 'main' && (
                   <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded z-40">
                     대표 이미지
                   </div>
                 )}
-                {!field.isMain && (
+                {field.type === 'normal' && (
                   <button
                     type="button"
                     className="absolute top-2 right-2 bg-white text-blue-500 text-xs px-2 py-1 rounded shadow-md z-40"
@@ -295,7 +339,7 @@ const ImagesField = () => {
 
 const OptionField = () => {
   const form = useFormContext<z.infer<typeof registerProductFormSchema>>();
-  const useOptions = form.watch("useOptions");
+  const useOptions = form.watch('useOptions');
   const {
     fields: optionFields,
     append: appendOption,
@@ -303,12 +347,12 @@ const OptionField = () => {
     replace: replaceOption,
   } = useFieldArray({
     control: form.control,
-    name: "options",
+    name: 'options',
   });
 
   useEffect(() => {
     if (useOptions) return;
-    replaceOption([{ name: "", price: "" }]);
+    replaceOption([{ name: '', price: '' }]);
   }, [useOptions]);
 
   if (!useOptions) {
@@ -356,7 +400,7 @@ const OptionField = () => {
       <Button
         type="button"
         size="sm"
-        onClick={() => appendOption({ name: "", price: "" })}
+        onClick={() => appendOption({ name: '', price: '' })}
         className="w-28 flex items-center gap-2 ml-auto"
       >
         <Plus className="w-4 h-4" />
@@ -377,7 +421,7 @@ const DetailField = () => {
     update: updateImage,
   } = useFieldArray({
     control: form.control,
-    name: "details",
+    name: 'details',
   });
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -395,6 +439,7 @@ const DetailField = () => {
       appendImage({
         file,
         previewUrl: imageUrl,
+        type: 'detail',
       });
     });
   };
@@ -410,6 +455,7 @@ const DetailField = () => {
       ...imageFields[index],
       file,
       previewUrl: imageUrl,
+      type: 'detail',
     });
   };
   const handleDeleteImage = (index: number) => {
@@ -472,10 +518,10 @@ interface ImageFileProps {
 const ImageFile = ({ previewUrl, alt, onEdit, onDelete }: ImageFileProps) => {
   if (!previewUrl) return null;
   return (
-    <div className={cn("min-w-40 min-h-40 relative border rounded-lg")}>
+    <div className={cn('min-w-40 min-h-40 relative border rounded-lg')}>
       <Image
         src={previewUrl}
-        alt={alt || "이미지"}
+        alt={alt || '이미지'}
         width={158}
         height={158}
         className="object-cover w-full h-40 rounded"

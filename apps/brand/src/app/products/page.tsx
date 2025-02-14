@@ -1,8 +1,8 @@
-import Title from "@/shared/components/Header";
-import { Button } from "@repo/ui/components/button";
-import Link from "next/link";
-import { getProducts } from "@/features/products/server/actions/products";
-import ProductList from "@/features/products/components/ProductList";
+import Title from '@/shared/components/Header';
+import { Button } from '@repo/ui/components/button';
+import Link from 'next/link';
+import { getProducts } from '@/features/products/server/actions/products';
+import ProductList from '@/features/products/components/ProductList';
 
 const Products = async () => {
   const products = await getProducts();
