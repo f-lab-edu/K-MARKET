@@ -13,7 +13,7 @@ export const registerProductFormSchema = z.object({
     .regex(/^\d+$/, { message: '숫자만 입력해주세요.' })
     .min(1, { message: '할인 가격을 입력해주세요.' })
     .optional(),
-  min_qty: z.number().min(1, { message: '최소 수량을 입력해주세요.' }),
+  min_qty: z.string().min(1, { message: '최소 수량을 입력해주세요.' }),
   options: z.array(
     z.object({
       name: z.string(),

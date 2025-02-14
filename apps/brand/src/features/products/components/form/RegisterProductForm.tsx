@@ -38,7 +38,7 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
     resolver: zodResolver(registerProductFormSchema),
     defaultValues: {
       category: '',
-      min_qty: 1,
+      min_qty: '1',
       name: '',
       useOptions: false,
       price: '',
@@ -54,6 +54,7 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
   ) => {
     console.log(values);
     const result = await registerProduct(values);
+    console.log(result);
   };
 
   return (
