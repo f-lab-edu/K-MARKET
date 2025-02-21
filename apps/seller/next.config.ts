@@ -1,12 +1,12 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@repo/ui"],
+  transpilePackages: ['@repo/ui'],
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "urbmouxhbtbfqukkvawx.supabase.co",
+        protocol: 'https',
+        hostname: 'urbmouxhbtbfqukkvawx.supabase.co',
       },
     ],
   },

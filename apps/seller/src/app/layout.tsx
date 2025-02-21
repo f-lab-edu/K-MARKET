@@ -1,18 +1,19 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from 'next/font/google';
 
-import "@repo/ui/globals.css";
-import { ThemeProvider } from "@/lib/ThemeProvider";
-import { cn } from "@repo/ui/lib/utils";
-import { Toaster } from "@repo/ui/components/toaster";
+import '@repo/ui/globals.css';
+import { ThemeProvider } from '@/lib/ThemeProvider';
+import { cn } from '@repo/ui/lib/utils';
+import { Toaster } from '@repo/ui/components/toaster';
+import Header from '@/components/Header';
 
 const fontSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
 const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+  subsets: ['latin'],
+  variable: '--font-mono',
 });
 
 export default function RootLayout({
@@ -24,10 +25,13 @@ export default function RootLayout({
         className={cn(
           fontSans.variable,
           fontMono.variable,
-          "font-sans antialiased",
+          'font-sans antialiased',
         )}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Header />
+          {children}
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>
