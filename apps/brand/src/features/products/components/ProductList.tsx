@@ -1,5 +1,5 @@
-import React from "react";
-import { Product } from "@/features/products/types/products";
+import React from 'react';
+import { Product } from '@/features/products/types/products';
 import {
   Table,
   TableBody,
@@ -7,15 +7,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@repo/ui/components/table";
-import Image from "next/image";
-import { Button } from "@repo/ui/components/button";
+} from '@repo/ui/components/table';
+import Image from 'next/image';
+import { Button } from '@repo/ui/components/button';
 
 interface ProductListProps {
-  products:Product[];
+  products: Product[];
 }
 
-const ProductList = ({products}: ProductListProps) => {
+const ProductList = ({ products }: ProductListProps) => {
   return (
     <Table>
       <TableHeader>
@@ -36,7 +36,7 @@ const ProductList = ({products}: ProductListProps) => {
             <TableCell>{product.category_name}</TableCell>
             <TableCell>
               <Image
-                src={product.main_image_url}
+                src={product.image_url}
                 alt={product.name}
                 width={100}
                 height={100}
