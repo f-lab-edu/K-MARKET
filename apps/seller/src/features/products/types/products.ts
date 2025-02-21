@@ -6,26 +6,30 @@ export interface Product {
   image: string;
 }
 
+interface ProductImage {
+  image_url: string;
+  type: string;
+}
+
+interface ProductPrice {
+  price: number;
+  discount_price: number | null;
+  min_qty: number;
+}
 export interface ProductWithRelations {
   id: number;
   name: string;
-  prices: Array<{
-    price: number;
-    discount_price: number | null;
-    min_qty: number;
-  }>;
-  images: Array<{
-    image_url: string;
-    type: string;
-  }>;
+  prices: ProductPrice[];
+  images: ProductImage[];
 }
 
-export interface ProductWithFullRelations extends ProductWithRelations {
-  categories: Array<{
-    name: string;
-  }>;
-  images: Array<{
-    image_url: string;
-    type: string;
-  }>;
+interface ProductOption {
+  id: number;
+  name: string;
+  additional_price: number;
+}
+export interface ProductDetail extends Omit<Product, 'image'> {
+  images: ProductImage[];
+  min_qty: number;
+  options: ProductOption[];
 }
