@@ -52,8 +52,7 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
   const handleSubmit = async (
     values: z.infer<typeof registerProductFormSchema>,
   ) => {
-    console.log(values);
-    registerProduct(values);
+    await registerProduct(values);
   };
 
   return (
