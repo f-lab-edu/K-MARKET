@@ -9,7 +9,10 @@ interface DetailImagesProps {
   productName: string;
 }
 
-export default function DetailImages({ images, productName }: DetailImagesProps) {
+export default function DetailImages({
+  images,
+  productName,
+}: DetailImagesProps) {
   const [showAll, setShowAll] = useState(false);
   const detailImages = images.filter((img) => img.type === 'detail');
   const displayImages = showAll ? detailImages : detailImages.slice(0, 2);
@@ -36,7 +39,7 @@ export default function DetailImages({ images, productName }: DetailImagesProps)
             onClick={() => setShowAll(true)}
             className="w-full py-4 border border-gray-300 rounded-md hover:bg-gray-50 transition text-gray-600"
           >
-            상세이미지 더보기 ({detailImages.length - 2}개)
+            더보기
           </button>
         )}
       </div>
