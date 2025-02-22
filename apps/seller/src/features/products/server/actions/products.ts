@@ -72,8 +72,6 @@ export const getProduct = async (id: string): Promise<ProductDetail> => {
     throw new Error('Product not found');
   }
 
-  console.log('product', product);
-
   return {
     id: product.id,
     name: product.name,

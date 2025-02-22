@@ -76,7 +76,6 @@ export const getProducts = async (): Promise<Product[]> => {
     )
     .eq('images.type', 'main'); // type이 'main'인 것만 필터링
 
-  console.log(products);
   if (error) {
     throw new Error(error.message);
   }
