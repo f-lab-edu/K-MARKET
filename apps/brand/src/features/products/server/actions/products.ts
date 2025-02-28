@@ -12,6 +12,7 @@ import { uploadFileAndGetUrl } from '@/utils/file';
 export const registerProduct = async (
   productData: z.infer<typeof registerProductFormSchema>,
 ) => {
+  console.log(productData);
   if (!productData) return;
 
   const { data, error } = await supabase.rpc('create_product', {
@@ -21,6 +22,7 @@ export const registerProduct = async (
     discount_price: Number(productData.discount_price),
     min_qty: Number(productData.min_qty),
     options: productData.useOptions ? mapOptions(productData.options) : null,
+    brand_id: productData.brandId,
     images: [
       ...(await mapImages(productData.images)),
       ...(await mapImages(productData.details)),

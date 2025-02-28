@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { User } from '@supabase/supabase-js';
 
 interface CustomerUser extends User {
-  brand_id: string;
+  brand_id: number;
   created_at: string;
   email: string;
   id: string;
