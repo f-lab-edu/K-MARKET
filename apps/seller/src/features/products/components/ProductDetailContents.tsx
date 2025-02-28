@@ -56,6 +56,16 @@ const ImageGallery = ({ product }: { product: ProductDetail }) => {
 };
 
 const ProductInfo = ({ product }: { product: ProductDetail }) => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const handleOpenChat = () => {
+    setIsOpened(true);
+  };
+
+  const handleCloseChat = () => {
+    setIsOpened(false);
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{product.name}</h1>
@@ -100,9 +110,13 @@ const ProductInfo = ({ product }: { product: ProductDetail }) => {
         <button className="flex-1 border border-gray-300 py-3 rounded-md hover:bg-gray-50 transition">
           장바구니
         </button>
-        <button className="w-14 border border-gray-300 rounded-md hover:bg-gray-50 transition flex items-center justify-center">
+        <button
+          className="w-14 border border-gray-300 rounded-md hover:bg-gray-50 transition flex items-center justify-center"
+          onClick={handleOpenChat}
+        >
           <MessageCircle className="w-6 h-6 text-gray-600" />
         </button>
+        <Chat isOpened={isOpened} onClose={handleCloseChat} />
       </div>
     </div>
   );
@@ -138,6 +152,104 @@ export const DetailImages = ({ product }: { product: ProductDetail }) => {
             더보기
           </button>
         )}
+      </div>
+    </div>
+  );
+};
+
+const Chat = ({
+  isOpened,
+  onClose,
+}: {
+  isOpened: boolean;
+  onClose: () => void;
+}) => {
+  if (!isOpened) return null;
+
+  const [messages, setMessages] = useState<
+    { id: string; content: string; sender: 'user' | 'seller' }[]
+  >([]);
+  const [newMessage, setNewMessage] = useState('');
+
+  const sendMessage = () => {
+    if (!newMessage.trim()) return;
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        content: newMessage,
+        sender: 'seller',
+      },
+    ]);
+    setNewMessage('');
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
+  return (
+    <div className="fixed border border-gray-300 bottom-4 right-4 w-80 bg-white rounded-lg shadow-lg">
+      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 className="text-lg font-semibold">채팅</h3>
+        <button
+          onClick={onClose}
+          className="p-1 hover:bg-gray-100 rounded-full"
+          aria-label="닫기"
+        >
+          <svg
+            className="w-5 h-5 text-gray-500"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div className="h-96 p-4 overflow-y-auto">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`mb-4 ${
+              message.sender === 'seller' ? 'text-right' : 'text-left'
+            }`}
+          >
+            <div
+              className={`inline-block p-2 rounded-lg ${
+                message.sender === 'seller'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-800'
+              }`}
+            >
+              {message.content}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="p-4 border-t border-gray-200 flex">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="메시지를 입력하세요..."
+          className="flex-1 p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:border-blue-500"
+        />
+        <button
+          onClick={sendMessage}
+          className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none"
+        >
+          전송
+        </button>
       </div>
     </div>
   );

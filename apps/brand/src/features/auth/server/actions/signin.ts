@@ -1,13 +1,19 @@
-import { supabase } from "@/utils/supabase/client";
-import { redirect } from "next/navigation";
-import { z } from "zod";
-import { signInFormSchema } from "@/features/auth/schemas";
+'use server';
 
-export const signIn = async (data: z.infer<typeof signInFormSchema>) => {
-  const { error } = await supabase.auth.signInWithPassword(data);
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
+import { signInFormSchema } from '@/features/auth/schemas';
+import { createClient } from '@/utils/supabase/server';
+
+export const signIn = async (payload: z.infer<typeof signInFormSchema>) => {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword(payload);
 
   if (error) {
-    return error;
+    throw new Error(error.message);
   }
-  redirect("/");
+
+  revalidatePath('/', 'layout');
+  redirect('/');
 };

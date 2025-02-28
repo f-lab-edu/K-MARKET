@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { supabase } from '@/utils/supabase/client';
 import {
   Product,
@@ -53,8 +52,7 @@ export const getProduct = async (id: string): Promise<ProductDetail> => {
   const { data: product, error } = await supabase
     .from('products')
     .select(
-      `
-    *,
+      `*,
     prices:product_prices(price, discount_price, min_qty),
     categories(name),
     images:product_images(image_url, type),
