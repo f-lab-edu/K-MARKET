@@ -11,9 +11,9 @@ export const registerProductFormSchema = z.object({
   discount_price: z
     .string()
     .regex(/^\d+$/, { message: '숫자만 입력해주세요.' })
-    .min(1, { message: '할인 가격을 입력해주세요.' })
-    .optional(),
-  min_qty: z.number().min(1, { message: '최소 수량을 입력해주세요.' }),
+    .optional()
+    .or(z.literal('')),
+  min_qty: z.string().regex(/^\d+$/, { message: '숫자만 입력해주세요.' }),
   options: z.array(
     z.object({
       name: z.string(),
@@ -39,5 +39,6 @@ export const registerProductFormSchema = z.object({
       }),
     )
     .min(1, { message: '최소 1개 이상의 이미지를 업로드해주세요.' })
-    .max(10, { message: '최대 20개까지 업로드할 수 있습니다.' }),
+    .max(20, { message: '최대 20개까지 업로드할 수 있습니다.' }),
+  brandId: z.number(),
 });

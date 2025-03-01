@@ -31,14 +31,18 @@ import { registerProduct } from '@/features/products/server/actions/products';
 
 interface RegisterProductFormProps {
   categories: Category[];
+  brandId?: number;
 }
 
-const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
+const RegisterProductForm = ({
+  categories,
+  brandId,
+}: RegisterProductFormProps) => {
   const form = useForm<z.infer<typeof registerProductFormSchema>>({
     resolver: zodResolver(registerProductFormSchema),
     defaultValues: {
       category: '',
-      min_qty: 1,
+      min_qty: '1',
       name: '',
       useOptions: false,
       price: '',
@@ -46,6 +50,7 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
       options: [{ name: '', price: '' }],
       images: [],
       details: [],
+      brandId,
     },
   });
 
@@ -133,7 +138,7 @@ const RegisterProductForm = ({ categories }: RegisterProductFormProps) => {
             )}
           />
         </Group>
-        <Group title="할인 상품 가격" isRequired>
+        <Group title="할인 상품 가격">
           <FormField
             control={form.control}
             name="discount_price"
