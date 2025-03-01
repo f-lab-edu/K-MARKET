@@ -48,5 +48,4 @@ export const signup = async (payload: z.infer<typeof signUpFormSchema>) => {
     business_license: businessLicenseUrl,
     id_card: idCardUrl,
   });
-  console.log('data', data, 'error', error);
 };

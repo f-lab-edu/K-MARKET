@@ -73,10 +73,11 @@ const ProductInfo = ({ product }: { product: ProductDetail }) => {
         <div className="flex items-baseline gap-2">
           <span className="text-2xl font-bold">
             ₩
-            {product.discount_price?.toLocaleString() ??
-              product.prices.toLocaleString()}
+            {product.discount_price
+              ? product.discount_price?.toLocaleString()
+              : product.prices.toLocaleString()}
           </span>
-          {product.discount_price && (
+          {Number(product.discount_price) > 0 && (
             <span className="text-lg text-gray-500 line-through">
               ₩{product.prices.toLocaleString()}
             </span>
@@ -192,7 +193,7 @@ const Chat = ({
   };
 
   return (
-    <div className="fixed border border-gray-300 bottom-4 right-4 w-80 bg-white rounded-lg shadow-lg">
+    <div className="fixed border border-gray-300 bottom-4 right-4 w-80 bg-white rounded-lg shadow-lg z-10">
       <div className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h3 className="text-lg font-semibold">채팅</h3>
         <button
