@@ -12,7 +12,6 @@ import { uploadFileAndGetUrl } from '@/utils/file';
 export const registerProduct = async (
   productData: z.infer<typeof registerProductFormSchema>,
 ) => {
-  console.log(productData);
   if (!productData) return;
 
   const { data, error } = await supabase.rpc('create_product', {

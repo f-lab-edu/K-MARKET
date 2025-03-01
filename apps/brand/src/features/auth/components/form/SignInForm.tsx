@@ -32,7 +32,6 @@ const SignInForm = () => {
     try {
       await signIn(value);
     } catch (error) {
-      console.log(',111221', error);
       toast({
         title:
           error instanceof Error
