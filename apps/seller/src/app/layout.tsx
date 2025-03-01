@@ -28,10 +28,7 @@ export default function RootLayout({
           'font-sans antialiased',
         )}
       >
-        <ThemeProvider>
-          <Header />
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
         <Toaster />
       </body>
     </html>

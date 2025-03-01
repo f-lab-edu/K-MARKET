@@ -8,6 +8,7 @@ export default async function Home() {
   const products = await getProducts();
   return (
     <main className="min-h-screen bg-white">
+      <Header />
       <MainCarousel />
       <CategorySection />
       <FeaturedProducts products={products} />
