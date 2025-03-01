@@ -1,42 +1,46 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@repo/ui/components/form";
-import { Input } from "@repo/ui/components/input";
-import { Button } from "@repo/ui/components/button";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@repo/ui/components/form';
+import { Input } from '@repo/ui/components/input';
+import { Button } from '@repo/ui/components/button';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import Link from "next/link";
-import { signInFormSchema } from "@/features/auth/schemas";
-import { signIn } from "@/features/auth/server/actions/signin";
-import { useToast } from "@repo/ui/hooks/use-toast";
+import Link from 'next/link';
+import { signInFormSchema } from '@/features/auth/schemas';
+import { signIn } from '@/features/auth/server/actions/signin';
+import { useToast } from '@repo/ui/hooks/use-toast';
 
 const SignInForm = () => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
   const handleSubmit = async (value: z.infer<typeof signInFormSchema>) => {
-    const error = await signIn(value);
-    if (error) {
+    try {
+      await signIn(value);
+    } catch (error) {
+      console.log(',111221', error);
       toast({
-        title: "입력하신 이메일 또는 비밀번호를 확인해주세요.",
-        variant: "destructive",
+        title:
+          error instanceof Error
+            ? error.message
+            : '이메일 또는 비밀번호를 확인해주세요.',
+        variant: 'destructive',
         duration: 2000,
       });
-      return;
     }
   };
 
